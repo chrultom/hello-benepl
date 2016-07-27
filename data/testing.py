@@ -1,16 +1,6 @@
-def array123(nums):
-    length = len(nums)
-    count = False
+def make_out_word(out, word):
+    z = len(out)/2
+    return "%s%s%s" %(out[z:], word, out[:z])
 
-    for x in range(length - 1):
-        print x
-        if nums[x] == 1 and nums[x + 1] == 2 and nums[x + 2] == 3:
-            print nums[x], nums[x + 1], nums[x + 2]
-            count = True
-    if count:
-        return True
-    else:
-        return False
 
-ta = array123([1, 1, 2, 3, 1])
-print ta
+print make_out_word('xxcaazz', 'xxbaaz')
