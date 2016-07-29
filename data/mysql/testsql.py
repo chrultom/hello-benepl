@@ -58,13 +58,26 @@ def start():
 
 
 def create(ccursor):
-    ccursor.execute("DROP TABLE IF EXISTS Employee")
-    ccursor.execute("CREATE TABLE Employee(Id INT PRIMARY KEY AUTO_INCREMENT, Name VARCHAR(25), Age INT)")
+    ask_create = raw_input("Are you sure? it will delete all your data... If sure, press y...")
+    if ask_create == "y":
+        ccursor.execute("DROP TABLE IF EXISTS Employee")
+        ccursor.execute("CREATE TABLE Employee(Id INT PRIMARY KEY AUTO_INCREMENT, Name VARCHAR(25), Age INT)")
 
 
 def insert(icursor, iconn):
-    icursor.execute("INSERT INTO Employee(Name, Age) VALUES ('Tomek Chrul', 29)")
-    iconn.commit()
+    try:
+        a = 'Kowalski'
+        b = 22
+        new_emp = (a,b)
+        print type(new_emp[1])
+        #sql = ("INSERT INTO Employee(Name, Age) VALUES ('Kowalski', 29)")
+        #sql = ("""INSERT INTO Employee(Name, Age) VALUES (%s, %d)""")
+        sql = ("INSERT INTO Employee(Name, Age) VALUES (%s, %s)")
+        icursor.execute(sql, new_emp)
+        iconn.commit()
+    except mysql.connector.Error as err:
+        print err
+        iconn.rollback()
 
 
 def read(rcursor):
