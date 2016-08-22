@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import errorcode
-from time import sleep
+# from time import sleep
 
 config = {
     'user': 'root',
@@ -34,26 +34,26 @@ def start():
         menu = 0
 
         while menu == 0:
-            print "1 - Create table Customer\n2 - Insert data to customer" \
-                  "\n3 - Read some data\n4 - Exit\n5 - Create table Stock\n6 - Add data to stock" \
-                  "\n7 - Create table Orders\n8 - Insert orders"
+            print "1 - Create table Customer\n2 - Create table Stock\n3 - Create table Orders" \
+                  "\n4 - Insert data to customer\n5 - Add data to stock\n6 - Insert orders" \
+                  "\n7 - Read some data\n8 - Exit"
             choice = int(raw_input("What do you want:"))
             print choice
             if choice == 1:
                 create_c(cursor)
-            elif choice == 2:
-                insert_c(cursor, conn)
-            elif choice == 3:
-                read(cursor)
-            elif choice == 5:
-                create_s(cursor)
-            elif choice == 6:
-                insert_s(cursor, conn)
             elif choice == 4:
-                menu = 1
+                insert_c(cursor, conn)
             elif choice == 7:
-                create_o(cursor)
+                read(cursor)
+            elif choice == 2:
+                create_s(cursor)
+            elif choice == 5:
+                insert_s(cursor, conn)
             elif choice == 8:
+                menu = 1
+            elif choice == 3:
+                create_o(cursor)
+            elif choice == 6:
                 insert_o(cursor, conn)
             else:
                 print" Try again."
@@ -77,11 +77,10 @@ def create_c(ccursor):
 
 def insert_c(icursor, iconn):
     try:
-        a = 'Kowalski'
-        b = 22
+        a = raw_input("Name of customer: ")
+        b = int(raw_input("Age: "))
         new_emp = (a, b)
-        print type(new_emp[1])
-        sql = ("INSERT INTO Employee(Name, Age) VALUES (%s, %s)")
+        sql = "INSERT INTO Employee(Name, Age) VALUES (%s, %s)"
         icursor.execute(sql, new_emp)
         iconn.commit()
     except mysql.connector.Error as err:
@@ -92,35 +91,25 @@ def insert_c(icursor, iconn):
 def read(rcursor):
     what = raw_input("What do you want to see: 1 - Customers, 2 - Stock, 3 - Orders")
     if what == "1":
-        choice = 'Employee'
+        sql_r = "SELECT * FROM Employee"
     elif what == "2":
-        choice = 'Stock'
-    else:
-        choice = 'Orders'
-    try:
-        sql = "SELECT * FROM %s" %choice
-        rcursor.execute(sql)
-    except mysql.connector.Error as err:
-        print err
-
-    print rcursor.description[1][0], rcursor.description[2][0]
-    row = rcursor.fetchone()
-    while row is not None:
-        print row[1], row[2]
-        row = rcursor.fetchone()
-
-#   testowy kod do sprawdzenia kluczy obcych
-    if what == "3":
-        sql = "SELECT Orders.Id, Employee.Name, Stock.Item \
+        sql_r = "SELECT * FROM Stock"
+    elif what == "3":
+        sql_r = "SELECT Orders.Id, Employee.Name, Stock.Item \
         FROM Orders LEFT JOIN Employee ON Orders.Customer_Order = Employee.Id \
         LEFT JOIN Stock ON Orders.Goods_Order = Stock.Id"
-        rcursor.execute(sql)
-        print rcursor.description[1][0], rcursor.description[2][0]
+    else:
+        print "Wrong option chosen. Default query will be used.."
+        sql_r = "SELECT * FROM Employee"
+    try:
+        rcursor.execute(sql_r)
+        print "%-10s %s" % (rcursor.description[1][0], rcursor.description[2][0])
         row = rcursor.fetchone()
         while row is not None:
-            print row[1], row[2]
+            print "%-10s %s" % (row[1], row[2])
             row = rcursor.fetchone()
-
+    except mysql.connector.Error as err:
+        print err
 
 
 def create_s(scursor):
@@ -135,7 +124,7 @@ def insert_s(icursor, iconn):
         a = raw_input('Name of a product: ')
         b = int(raw_input("Number of items: "))
         new_item = (a, b)
-        sql = ("INSERT INTO Stock(Item, Amount) VALUES (%s, %s)")
+        sql = "INSERT INTO Stock(Item, Amount) VALUES (%s, %s)"
         icursor.execute(sql, new_item)
         iconn.commit()
     except mysql.connector.Error as err:
@@ -158,9 +147,9 @@ def create_o(ocursor):
 
 def insert_o(ocursor, oconn):
     try:
-        #a = raw_input('Customer')
-        #b = int(raw_input('Goods')
-        new_item = (2, 2)
+        a = int(raw_input('Customer: '))
+        b = int(raw_input('Goods: '))
+        new_item = (a, b)
         sql = "INSERT INTO Orders(Customer_Order, Goods_Order) VALUES (%s, %s)"
         ocursor.execute(sql, new_item)
         oconn.commit()
