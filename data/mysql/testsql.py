@@ -36,7 +36,7 @@ def start():
         while menu == 0:
             print "1 - Create table Customer\n2 - Create table Stock\n3 - Create table Orders" \
                   "\n4 - Insert data to customer\n5 - Add data to stock\n6 - Insert orders" \
-                  "\n7 - Read some data\n8 - Exit"
+                  "\n7 - Read some data\n8 - Exit\n9 - Update stock"
             choice = int(raw_input("What do you want:"))
             print choice
             if choice == 1:
@@ -55,6 +55,9 @@ def start():
                 create_o(cursor)
             elif choice == 6:
                 insert_o(cursor, conn)
+            elif choice == 9:
+                update_s(cursor, conn)
+                # musi byc commit!
             else:
                 print" Try again."
 
@@ -157,5 +160,8 @@ def insert_o(ocursor, oconn):
         print err
         oconn.rollback()
 
+
+def update_s(cursor, conn):
+    pass
 
 start()
