@@ -25,7 +25,7 @@ def com10target(which_side):
     ser.close()
 
 #com1()
-x = raw_input("Do (c)ompa czy do (t)argeta?")
+x = input("Do (c)ompa czy do (t)argeta?")
 if x == "c":
     com10target("80")
 else:

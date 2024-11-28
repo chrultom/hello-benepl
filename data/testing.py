@@ -1,3 +1,3 @@
 ziomek = "Ciota"
 
-print "Dupa dupa %s dupa." % ziomek
+print ("Dupa dupa %s dupa.") % ziomek

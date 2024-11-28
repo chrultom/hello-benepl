@@ -9,8 +9,8 @@ def mainFunction():
     return y
 
 
-print mainFunction()
+print (mainFunction())
 
-print "I am a first very important part."
-print "I am very important second line"
+print ("I am a first very important part.")
+print ("I am very important second line")
 

@@ -16,6 +16,6 @@ try:
     if argv[1] == "80" or argv[1] == "83":
         com10target(argv[1])
     else:
-        print "You have to put 80 or 83 as parameter!"
+        print ("You have to put 80 or 83 as parameter!")
 except IndexError:
-    print "Wrong number of parameters!"
+    print ("Wrong number of parameters!")
