@@ -5,7 +5,7 @@ author = Tomasz
 
 def mainFunction():
     #x = "This is main branch and leave it alone!"
-    y = "This is branch line! It this the best!"
+    y = "This is branch line! It is the best!"
     return y
 
 
